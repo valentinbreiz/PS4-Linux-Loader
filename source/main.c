@@ -36,7 +36,7 @@ int _main(void) {
 
 	printfsocket("Kexec size [%d]\n", kexec_size);
 	
-	memcpy(DT_HASH_SEGMENT, kexec, kexec_size);
+	memcpy(DT_HASH_SEGMENT, kexec, kexec_size); //Fails here
 	
 	printfsocket("Kexec init [1]\n");
 
