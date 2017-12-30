@@ -15,6 +15,9 @@ initramfs.cpio.gz : The initial file system that gets loaded into memory during 
 
 ## Credits and links
 Thanks to kR105 and the team fail0verflow
+
 https://github.com/kR105-zz/PS4-dlclose/tree/linux-loader
+
 https://cturt.github.io/ps4-3.html
+
 https://github.com/CTurt/PS4-playground
