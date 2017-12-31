@@ -149,6 +149,7 @@ struct ucred {
 struct proc {
 	char useless[64];
 	struct ucred *p_ucred;
+	struct filedesc *p_fd;
 };
 
 struct thread {
@@ -168,6 +169,20 @@ struct fileops {
 	void	*fo_chmod;
 	void	*fo_chown;
 	int	fo_flags;	/* DFLAG_* below */
+};
+
+struct filedesc {
+	void *useless1[3];
+    	void *fd_rdir;
+    	void *fd_jdir;
+};
+
+struct kpayload_args{
+	uint64_t user_arg;
+};
+
+struct kdump_args{
+    	uint64_t argArrayPtr;
 };
 
 #define X86_CR0_WP (1 << 16)
