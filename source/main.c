@@ -32,7 +32,7 @@ unsigned int long long __readmsr(unsigned long __register) {
 
 int kpayload(struct thread *td, struct kpayload_args* args){
 
-	printfsocket("Starting kpayload...\n");
+	//Starting kpayload...
 
 	struct ucred* cred;
 	struct filedesc* fd;
@@ -40,13 +40,13 @@ int kpayload(struct thread *td, struct kpayload_args* args){
 	fd = td->td_proc->p_fd;
 	cred = td->td_proc->p_ucred;
 
-	printfsocket("Reading kernel_base...\n");
+	//Reading kernel_base...
 	void* kernel_base = &((uint8_t*)__readmsr(0xC0000082))[-0x30EB30];
 	uint8_t* kernel_ptr = (uint8_t*)kernel_base;
 	void** got_prison0 =   (void**)&kernel_ptr[0xF26010];
 	void** got_rootvnode = (void**)&kernel_ptr[0x206D250];
 	
-	printfsocket("Resolve kernel functions...\n");
+	//Resolve kernel functions...
 
 	int (*copyout)(const void *kaddr, void *uaddr, size_t len) = (void *)(kernel_base + 0x286d70);
 	int (*printfkernel)(const char *fmt, ...) = (void *)(kernel_base + 0x347580);
@@ -60,34 +60,18 @@ int kpayload(struct thread *td, struct kpayload_args* args){
 	cred->cr_prison = *got_prison0;
 	fd->fd_rdir = fd->fd_jdir = *got_rootvnode;
 
-	printfsocket("Enabling uart...\n");
-	uint16_t *securityFlags = (uint64_t *)(kernel_base+0x2001516);
-	*securityFlags = *securityFlags & ~(1 << 15);	
-
-	printfsocket("Disabling write protection...\n");
+	//Disable write protection...
 	uint64_t cr0 = readCr0();
 	writeCr0(cr0 & ~X86_CR0_WP);
 	
-	//Kexec
-	printfsocket("Kexec init...\n");
+	//Kexec inited successfully!
 
 	void *DT_HASH_SEGMENT = (void *)0xffffffff82200160;
-	
-	printfsocket("Kexec init [0]\n");
-
-	printfsocket("Kexec size [%d]\n", kexec_size);
-	
 	copyin(DT_HASH_SEGMENT, kexec, kexec_size);
-	
-	printfsocket("Kexec init [1]\n");
 
 	void (*kexec_init)(void *, void *) = DT_HASH_SEGMENT;
 
-	printfsocket("Kexec init [2]\n");
-
-	kexec_init(NULL, NULL);
-
-	printfsocket("Kexec inited successfully!\n");
+	//kexec_init((void*)0xFFFFFFFF8246E340, NULL);
 
 	// Say hello and put the kernel base in userland to we can use later
 
@@ -189,13 +173,13 @@ void usbthing()
 	fclose(fkernel);
 	fclose(finitramfs);
 
-	printfsocket("Call sys_kexec (153 syscall)");
+	//Call sys_kexec (153 syscall)
 	syscall(153, kernel, kernelsize, initramfs, initramfssize, cmd_line);
 
 	free(kernel);
 	free(initramfs);
 
-	printfsocket("Reboot PS4");
+	//Reboot PS4
 	int evf = syscall(540, "SceSysCoreReboot");
 	syscall(546, evf, 0x4000, 0);
 	syscall(541, evf);
