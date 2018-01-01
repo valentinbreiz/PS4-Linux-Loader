@@ -66,12 +66,12 @@ int kpayload(struct thread *td, struct kpayload_args* args){
 	
 	//Kexec inited successfully!
 
-	void *DT_HASH_SEGMENT = (void *)0xffffffff82200160;
-	copyin(DT_HASH_SEGMENT, kexec, kexec_size);
+	void *DT_HASH_SEGMENT = (void *)(kernel_base+ 0xA0DFF8);
+	memcpy(DT_HASH_SEGMENT,kexec, kexec_size);
 
 	void (*kexec_init)(void *, void *) = DT_HASH_SEGMENT;
 
-	//kexec_init((void*)0xFFFFFFFF8246E340, NULL);
+	kexec_init((void *)(kernel_base+0x347580), NULL);
 
 	// Say hello and put the kernel base in userland to we can use later
 
