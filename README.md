@@ -18,6 +18,12 @@ You need a FAT32 formatted USB drive plugged in on any PS4's USB port with the f
 ## Credits and links
 Thanks to kR105, 2much4u, Darbnes and the team fail0verflow
 
-https://github.com/kR105-zz/PS4-dlclose/tree/linux-loader
+Useful links:
 
-https://cturt.github.io/ps4-3.html
+- For the kexec execution: https://github.com/kR105-zz/PS4-dlclose/tree/linux-loader
+
+- For kexec: https://github.com/fail0verflow/ps4-kexec
+
+- For more explanations: https://cturt.github.io/ps4-3.html
+
+- For executing code in kernel space: https://github.com/VV1LD/405-KernelDumper
