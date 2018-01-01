@@ -14,10 +14,8 @@ bzImage : Kernel image that will be loaded. Recommended to use this sources to c
 initramfs.cpio.gz : The initial file system that gets loaded into memory during the Linux startup process. This one is recommended.
 
 ## Credits and links
-Thanks to kR105 and the team fail0verflow
+Thanks to kR105, 2much4u and the team fail0verflow
 
 https://github.com/kR105-zz/PS4-dlclose/tree/linux-loader
 
 https://cturt.github.io/ps4-3.html
-
-https://github.com/CTurt/PS4-playground
