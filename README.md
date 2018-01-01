@@ -1,5 +1,6 @@
 # PS4 Linux Loader
-(Doesn't work YET).
+WORKS! with https://github.com/idc/ps4-entrypoint-405 exploit.
+hosted here for your use darbness.com/ps4
 
 A simple payload that let you run Linux on your 4.05 PS4
 

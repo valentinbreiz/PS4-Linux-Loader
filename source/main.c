@@ -100,7 +100,7 @@ int _main(struct thread *td) {
 
 	server.sin_len = sizeof(server);
 	server.sin_family = AF_INET;
-	server.sin_addr.s_addr = IP(192, 168, 1, 12);
+	server.sin_addr.s_addr = IP(192, 168, 1, 113);
 	server.sin_port = sceNetHtons(9023);
 	memset(server.sin_zero, 0, sizeof(server.sin_zero));
 	sock = sceNetSocket("debug", AF_INET, SOCK_STREAM, 0);
