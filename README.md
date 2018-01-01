@@ -19,7 +19,7 @@ Then you will need to send the payload (PS4-Linux-Loader.bin) to your PS4. For t
 - Clean code
 
 ## Credits and links
-Thanks to kR105, 2much4u, Darbnes and the team fail0verflow
+Thanks to 2much4u, Darbnes and jiangwei.
 
 Useful links:
 
