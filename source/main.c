@@ -47,7 +47,6 @@ int kpayload(struct thread *td, struct kpayload_args* args){
 	void** got_rootvnode = (void**)&kernel_ptr[0x206D250];
 	
 	//Resolve kernel functions...
-
 	int (*copyout)(const void *kaddr, void *uaddr, size_t len) = (void *)(kernel_base + 0x286d70);
 	int (*printfkernel)(const char *fmt, ...) = (void *)(kernel_base + 0x347580);
 	int (*copyin)(const void *uaddr, void *kaddr, size_t len) = (void *)(kernel_base + 0x286df0);
@@ -64,8 +63,7 @@ int kpayload(struct thread *td, struct kpayload_args* args){
 	uint64_t cr0 = readCr0();
 	writeCr0(cr0 & ~X86_CR0_WP);
 	
-	//Kexec inited successfully!
-
+	//Kexec init
 	void *DT_HASH_SEGMENT = (void *)(kernel_base+ 0xA0DFF8);
 	memcpy(DT_HASH_SEGMENT,kexec, kexec_size);
 
@@ -74,7 +72,6 @@ int kpayload(struct thread *td, struct kpayload_args* args){
 	kexec_init((void *)(kernel_base+0x347580), NULL);
 
 	// Say hello and put the kernel base in userland to we can use later
-
 	printfkernel("\n\n\nHELLO FROM YOUR KERN DUDE =)\n\n\n");
 
 	printfkernel("kernel base is:0x%016llx\n", kernel_base);
@@ -100,7 +97,7 @@ int _main(struct thread *td) {
 
 	server.sin_len = sizeof(server);
 	server.sin_family = AF_INET;
-	server.sin_addr.s_addr = IP(192, 168, 1, 113);
+	server.sin_addr.s_addr = IP(192, 168, 1, 12);
 	server.sin_port = sceNetHtons(9023);
 	memset(server.sin_zero, 0, sizeof(server.sin_zero));
 	sock = sceNetSocket("debug", AF_INET, SOCK_STREAM, 0);
@@ -116,7 +113,7 @@ int _main(struct thread *td) {
 
 	int sRet = syscall(11,kpayload,td,dump);
 
-	printfsocket("Kernel patched!\n");
+	printfsocket("Kernel patched, Kexec initialized!\n");
 
 	printfsocket("Starting PS4 Linux Loader\n");
 	
