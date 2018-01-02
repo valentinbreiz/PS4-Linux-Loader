@@ -15,8 +15,8 @@ Then you will need to send the payload (PS4-Linux-Loader.bin) to your PS4. For t
 
 ## To do:
 
-- Fix ASLR (that causes a random successful boot)
-- Clean code
+- Port other PS4 models.
+- Clean code.
 
 ## Credits and links
 Thanks to 2much4u, Darbnes and jiangwei.
