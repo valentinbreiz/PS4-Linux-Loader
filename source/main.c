@@ -72,7 +72,7 @@ int kpayload(struct thread *td, struct kpayload_args* args){
 	kexec_init((void *)(kernel_base+0x347580), NULL);
 
 	// Say hello and put the kernel base in userland to we can use later
-	printfkernel("\n\n\nHELLO FROM YOUR KERN DUDE =)\n\n\n");
+	printfkernel("PS4 Linux Loader for 4.05\n");
 
 	printfkernel("kernel base is:0x%016llx\n", kernel_base);
 
