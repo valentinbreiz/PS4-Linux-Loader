@@ -18,8 +18,7 @@ Then you will need to send the payload (PS4-Linux-Loader.bin) to your PS4. For t
 
 ## To do:
 
-- Port other PS4 models.
-- Clean code.
+- Port MN864729 transmitter in Linux for a working video output on newer PS4.
 
 ## Credits and links
 Thanks to 2much4u, Darbnes and jiangwei.
