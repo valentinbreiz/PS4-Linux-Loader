@@ -3,7 +3,7 @@
 #include "ps4.h"
 #include "defines.h"
 
-#define    KERN_XFAST_SYSCALL 0x30EB30 //4.05
+#define    KERN_XFAST_SYSCALL 0x3095D0 //4.55
 
 #define	CTL_KERN	1	/* "high kernel": proc, limits */
 #define	KERN_PROC	14	/* struct: process entries */
@@ -41,10 +41,10 @@ int kpayload(struct thread *td, struct kpayload_args* args){
 	cred = td->td_proc->p_ucred;
 
 	//Reading kernel_base...
-	void* kernel_base = &((uint8_t*)__readmsr(0xC0000082))[-0x30EB30]; //4.05
+	void* kernel_base = &((uint8_t*)__readmsr(0xC0000082))[-0x30EB30];
 	uint8_t* kernel_ptr = (uint8_t*)kernel_base;
-	void** got_prison0 =   (void**)&kernel_ptr[0xF26010]; //4.05
-	void** got_rootvnode = (void**)&kernel_ptr[0x206D250]; //4.05
+	void** got_prison0 =   (void**)&kernel_ptr[0x10399B0]; //4.55
+	void** got_rootvnode = (void**)&kernel_ptr[0x21AFA30]; //4.05
 	
 	//Resolve kernel functions...
 	int (*copyout)(const void *kaddr, void *uaddr, size_t len) = (void *)(kernel_base + 0x14A7B0); //4.55
