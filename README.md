@@ -4,7 +4,7 @@ A simple payload that let you run Linux on your 4.55 PS4.
 Works! [Vultra](https://github.com/Vultra) helped a lot to port PS4 Linux Loader on 4.55!
 
 ## How to build
-I use https://github.com/xvortex/ps4-payload-sdk to compile it. You also need to compile https://github.com/fail0verflow/ps4-kexec and place 'kexec.bin' into this folder. Compile kexec with 'make CFLAG='-DPS4_4_55 -DKASLR -DNO_SYMTAB'.
+I use https://github.com/xvortex/ps4-payload-sdk to compile it. You also need to compile https://github.com/valentinbreiz/ps4-kexec and place 'kexec.bin' into this folder. Compile kexec with 'make CFLAG='-DPS4_4_55 -DKASLR -DNO_SYMTAB'.
 
 ## How to use
 
