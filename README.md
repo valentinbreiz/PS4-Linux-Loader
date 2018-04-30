@@ -16,9 +16,13 @@ You need a FAT32 formatted USB drive plugged in on any PS4's USB port with the f
 
 Then you will need to send the payload (PS4-Linux-Loader.bin) to your PS4. For that go to your PS4 web browser, go to darbness.com/ps4 and send the payload to your PS4 using netcat or other.. (You can also use my tool: [PS4 Payload Sender](https://github.com/valentinbreiz/PS4-Payload-Sender)).
 
-## To do:
+For 4.55
 
-- Port MN864729 transmitter in Linux for a working video output on newer PS4 (WIP).
+https://github.com/valentinbreiz/PS4-Linux-Loader/tree/4.55
+
+For PS4 Pro:
+
+https://github.com/eeply/ps4-linux/tree/ps4pro
 
 ## Credits and links
 Thanks to 2much4u, Darbnes and jiangwei.
