@@ -3,7 +3,7 @@
 #include "ps4.h"
 #include "defines.h"
 
-#define    KERN_XFAST_SYSCALL 0x30EB30
+#define    KERN_XFAST_SYSCALL 0x1c0
 
 #define	CTL_KERN	1	/* "high kernel": proc, limits */
 #define	KERN_PROC	14	/* struct: process entries */
@@ -41,15 +41,15 @@ int kpayload(struct thread *td, struct kpayload_args* args){
 	cred = td->td_proc->p_ucred;
 
 	//Reading kernel_base...
-	void* kernel_base = &((uint8_t*)__readmsr(0xC0000082))[-0x30EB30];
+	void* kernel_base = &((uint8_t*)__readmsr(0xC0000082))[-KERN_XFAST_SYSCALL];
 	uint8_t* kernel_ptr = (uint8_t*)kernel_base;
-	void** got_prison0 =   (void**)&kernel_ptr[0xF26010];
-	void** got_rootvnode = (void**)&kernel_ptr[0x206D250];
+	void** got_prison0 =   (void**)&kernel_ptr[0x10986a0];
+	void** got_rootvnode = (void**)&kernel_ptr[0x22c1a70];
 	
 	//Resolve kernel functions...
-	int (*copyout)(const void *kaddr, void *uaddr, size_t len) = (void *)(kernel_base + 0x286d70);
-	int (*printfkernel)(const char *fmt, ...) = (void *)(kernel_base + 0x347580);
-	int (*copyin)(const void *uaddr, void *kaddr, size_t len) = (void *)(kernel_base + 0x286df0);
+	int (*copyout)(const void *kaddr, void *uaddr, size_t len) = (void *)(kernel_base + 0x1ea630);
+	int (*printfkernel)(const char *fmt, ...) = (void *)(kernel_base + 0x436040);
+	int (*copyin)(const void *uaddr, void *kaddr, size_t len) = (void *)(kernel_base + 0x1ea710);
 
 	cred->cr_uid = 0;
 	cred->cr_ruid = 0;
@@ -69,10 +69,10 @@ int kpayload(struct thread *td, struct kpayload_args* args){
 
 	void (*kexec_init)(void *, void *) = DT_HASH_SEGMENT;
 
-	kexec_init((void *)(kernel_base+0x347580), NULL);
+	kexec_init((void *)(kernel_base+0x436040), NULL);
 
 	// Say hello and put the kernel base in userland to we can use later
-	printfkernel("PS4 Linux Loader for 4.05\n");
+	printfkernel("PS4 Linux Loader for 5.05 by valentinbreiz\n");
 
 	printfkernel("kernel base is:0x%016llx\n", kernel_base);
 
