@@ -10,7 +10,7 @@
 #define	KERN_PROC_VMMAP	32	/* VM map entries for process */
 #define	KERN_PROC_PID	1	/* by process id */
 
-extern char kexec[];
+extern char kexec_ps4[];
 extern unsigned kexec_size;
 
 static int sock;
@@ -65,7 +65,7 @@ int kpayload(struct thread *td, struct kpayload_args* args){
 	
 	//Kexec init
 	void *DT_HASH_SEGMENT = (void *)(kernel_base+ 0xB1D820); //For you @Vultra :P
-	memcpy(DT_HASH_SEGMENT,kexec, kexec_size);
+	memcpy(DT_HASH_SEGMENT,kexec_ps4, kexec_size);
 
 	void (*kexec_init)(void *, void *) = DT_HASH_SEGMENT;
 
@@ -97,7 +97,7 @@ int _main(struct thread *td) {
 
 	server.sin_len = sizeof(server);
 	server.sin_family = AF_INET;
-	server.sin_addr.s_addr = IP(192, 168, 1, 2);
+	server.sin_addr.s_addr = IP(192, 168, 0, 28);
 	server.sin_port = sceNetHtons(9023);
 	memset(server.sin_zero, 0, sizeof(server.sin_zero));
 	sock = sceNetSocket("debug", AF_INET, SOCK_STREAM, 0);
@@ -106,6 +106,8 @@ int _main(struct thread *td) {
 	sceNetSetsockopt(sock, IPPROTO_TCP, TCP_NODELAY, (char *)&flag, sizeof(int));
 	
 	printfsocket("Connected!\n");
+
+	printfsocket("Hello from valentinbreiz :3\n");
 
 	uint64_t* dump = mmap(NULL, 0x1000, PROT_READ | PROT_WRITE, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
 
