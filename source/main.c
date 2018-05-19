@@ -64,7 +64,7 @@ int kpayload(struct thread *td, struct kpayload_args* args){
 	writeCr0(cr0 & ~X86_CR0_WP);
 	
 	//Kexec init
-	void *DT_HASH_SEGMENT = (void *)(kernel_base+ 0xA0DFF8);
+	void *DT_HASH_SEGMENT = (void *)(kernel_base+ 0xB1D820); // I know it's for 4.55 but I think it will works
 	memcpy(DT_HASH_SEGMENT,kexec, kexec_size);
 
 	void (*kexec_init)(void *, void *) = DT_HASH_SEGMENT;
