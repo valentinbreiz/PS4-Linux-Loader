@@ -10,7 +10,7 @@
 #define	KERN_PROC_VMMAP	32	/* VM map entries for process */
 #define	KERN_PROC_PID	1	/* by process id */
 
-extern char kexec[];
+extern char kexec_ps4[];
 extern unsigned kexec_size;
 
 static int sock;
@@ -44,12 +44,12 @@ int kpayload(struct thread *td, struct kpayload_args* args){
 	void* kernel_base = &((uint8_t*)__readmsr(0xC0000082))[-KERN_XFAST_SYSCALL];
 	uint8_t* kernel_ptr = (uint8_t*)kernel_base;
 	void** got_prison0 =   (void**)&kernel_ptr[0x10986a0];
-	void** got_rootvnode = (void**)&kernel_ptr[0x22c1a70];
+	void** got_rootvnode = (void**)&kernel_ptr[0x22c19F0];
 	
 	//Resolve kernel functions...
-	int (*copyout)(const void *kaddr, void *uaddr, size_t len) = (void *)(kernel_base + 0x1ea630);
-	int (*printfkernel)(const char *fmt, ...) = (void *)(kernel_base + 0x436040);
-	int (*copyin)(const void *uaddr, void *kaddr, size_t len) = (void *)(kernel_base + 0x1ea710);
+	int (*copyout)(const void *kaddr, void *uaddr, size_t len) = (void *)(kernel_base + 0x1ea520);
+	int (*printfkernel)(const char *fmt, ...) = (void *)(kernel_base + 0x435c70);
+	int (*copyin)(const void *uaddr, void *kaddr, size_t len) = (void *)(kernel_base + 0x1ea600);
 
 	cred->cr_uid = 0;
 	cred->cr_ruid = 0;
@@ -64,12 +64,12 @@ int kpayload(struct thread *td, struct kpayload_args* args){
 	writeCr0(cr0 & ~X86_CR0_WP);
 	
 	//Kexec init
-	void *DT_HASH_SEGMENT = (void *)(kernel_base+ 0xA0DFF8);
-	memcpy(DT_HASH_SEGMENT,kexec, kexec_size);
+	void *DT_HASH_SEGMENT = (void *)(kernel_base+ 0xB5EE20);
+	memcpy(DT_HASH_SEGMENT,kexec_ps4, kexec_size);
 
 	void (*kexec_init)(void *, void *) = DT_HASH_SEGMENT;
 
-	kexec_init((void *)(kernel_base+0x436040), NULL);
+	kexec_init((void *)(kernel_base+0x435c70), NULL);
 
 	// Say hello and put the kernel base in userland to we can use later
 	printfkernel("PS4 Linux Loader for 5.05 by valentinbreiz\n");
