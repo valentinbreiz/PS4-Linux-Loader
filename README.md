@@ -20,10 +20,6 @@ For 4.55:
 
 https://github.com/valentinbreiz/PS4-Linux-Loader/tree/4.55
 
-For 5.05:
-
-https://github.com/valentinbreiz/PS4-Linux-Loader/tree/5.05
-
 For PS4 Pro:
 
 https://github.com/eeply/ps4-linux/tree/ps4pro
