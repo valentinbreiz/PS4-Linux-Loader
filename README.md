@@ -18,6 +18,10 @@ For 4.05:
 
 https://github.com/valentinbreiz/PS4-Linux-Loader
 
+For 5.01:
+
+https://github.com/valentinbreiz/PS4-Linux-Loader/tree/5.01
+
 For 5.05:
 
 https://github.com/valentinbreiz/PS4-Linux-Loader/tree/5.05
