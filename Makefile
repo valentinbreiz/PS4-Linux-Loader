@@ -15,21 +15,44 @@ SFLAGS	:=	-nostartfiles -nostdlib -march=btver2 -mtune=btver2
 LFLAGS	:=	$(LDIRS) -Xlinker -T $(LIBPS4)/linker.x -Wl,--build-id=none -Ttext=$(TEXT) -Tdata=$(DATA)
 CFILES	:=	$(wildcard $(SDIR)/*.c)
 SFILES	:=	$(wildcard $(SDIR)/*.s)
-OBJS	:=	$(patsubst $(SDIR)/%.c, $(ODIR)/%.o, $(CFILES)) $(patsubst $(SDIR)/%.s, $(ODIR)/%.o, $(SFILES))
+OBJS	:=	$(patsubst $(SDIR)/%.c, $(ODIR)/%_normal.o, $(CFILES)) $(patsubst $(SDIR)/%.s, $(ODIR)/%_normal.o, $(SFILES))
+OBJS_DEBUG	:=	$(patsubst $(SDIR)/%.c, $(ODIR)/%_debug.o, $(CFILES)) $(patsubst $(SDIR)/%.s, $(ODIR)/%_debug.o, $(SFILES))
+
+
+DIP_1 = 192
+DIP_2 = 168
+DIP_3 = 1
+DIP_4 = 12
 
 LIBS	:=	-lPS4
 
-TARGET = $(shell basename $(CURDIR)).bin
+TARGET = everything
 
-$(TARGET): $(ODIR) $(OBJS)
-	$(CC) $(LIBPS4)/crt0.s $(ODIR)/*.o -o temp.t $(CFLAGS) $(LFLAGS) $(LIBS)
-	$(OBJCOPY) -O binary temp.t $(TARGET)
+everything: $(shell basename $(CURDIR))_normal.bin $(shell basename $(CURDIR))_debug.bin
+
+
+$(shell basename $(CURDIR))_normal.bin: $(ODIR) $(OBJS)
+	$(CC) $(LIBPS4)/crt0.s $(ODIR)/*_normal.o -o temp.t $(CFLAGS) $(LFLAGS) $(LIBS)
+	$(OBJCOPY) -O binary temp.t $(shell basename $(CURDIR))_normal.bin
 	rm -f temp.t
 
-$(ODIR)/%.o: $(SDIR)/%.c
+$(shell basename $(CURDIR))_debug.bin: $(ODIR) $(OBJS_DEBUG)
+	$(CC) $(LIBPS4)/crt0.s $(ODIR)/*_debug.o -o temp.t $(CFLAGS) $(LFLAGS) $(LIBS)
+	$(OBJCOPY) -O binary temp.t $(shell basename $(CURDIR))_debug.bin
+	rm -f temp.t
+
+
+
+$(ODIR)/%_normal.o: $(SDIR)/%.c
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-$(ODIR)/%.o: $(SDIR)/%.s
+$(ODIR)/%_normal.o: $(SDIR)/%.s
+	$(AS) -c -o $@ $< $(SFLAGS)
+
+$(ODIR)/%_debug.o: $(SDIR)/%.c
+	$(CC) -c -o $@ $< $(CFLAGS) -D DEBUG_SOCKET=1 -D DIP_1=$(DIP_1) -D DIP_2=$(DIP_2) -D DIP_3=$(DIP_3) -D DIP_4=$(DIP_4)
+
+$(ODIR)/%_debug.o: $(SDIR)/%.s
 	$(AS) -c -o $@ $< $(SFLAGS)
 
 $(ODIR):

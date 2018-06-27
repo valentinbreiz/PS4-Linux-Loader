@@ -1,5 +1,3 @@
-#define DEBUG_SOCKET 1
-
 #include "ps4.h"
 #include "defines.h"
 
@@ -93,18 +91,19 @@ int _main(struct thread *td) {
 	initNetwork();
 	initPthread();
 
+#ifdef DEBUG_SOCKET
 	struct sockaddr_in server;
 
 	server.sin_len = sizeof(server);
 	server.sin_family = AF_INET;
-	server.sin_addr.s_addr = IP(192, 168, 1, 12);
+	server.sin_addr.s_addr = IP(DIP_1, DIP_2, DIP_3, DIP_4); //DEBUG_IPADDRESS);
 	server.sin_port = sceNetHtons(9023);
 	memset(server.sin_zero, 0, sizeof(server.sin_zero));
 	sock = sceNetSocket("debug", AF_INET, SOCK_STREAM, 0);
 	sceNetConnect(sock, (struct sockaddr *)&server, sizeof(server));
 	int flag = 1;
 	sceNetSetsockopt(sock, IPPROTO_TCP, TCP_NODELAY, (char *)&flag, sizeof(int));
-	
+#endif
 	printfsocket("Connected!\n");
 
 	uint64_t* dump = mmap(NULL, 0x1000, PROT_READ | PROT_WRITE, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
